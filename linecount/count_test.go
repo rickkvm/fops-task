@@ -10,3 +10,15 @@ func TestCountFeature(T *testing.T) {
 	result := Count(data)
 	assert.Equal(T, 4, result)
 }
+
+func TestCountWithNewlineEnd(T *testing.T) {
+	data := []byte("this\nis\na\ntest\n")
+	result := Count(data)
+	assert.Equal(T, 4, result)
+}
+
+func TestCountWithEmptyFile(T *testing.T) {
+	data := []byte("")
+	result := Count(data)
+	assert.Equal(T, 0, result)
+}
