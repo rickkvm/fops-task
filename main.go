@@ -19,9 +19,10 @@ import "github.com/rickkvm/fops-task/cmd"
 
 var (
 	// version shoud be set during compile time
-	VERSION string = "v0.1.0"
+	// will be updated by github action releaser
+	version string = "v0.1.0"
 )
 
 func main() {
-	cmd.Execute(VERSION)
+	cmd.Execute(version)
 }
