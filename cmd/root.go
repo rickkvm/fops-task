@@ -48,4 +48,5 @@ func init() {
 	rootCmd.SetUsageTemplate(usageTemplate)
 	rootCmd.AddCommand(linecountCmd)
 	rootCmd.AddCommand(checksumCmd)
+	rootCmd.SetHelpCommand(helpCmd)
 }
