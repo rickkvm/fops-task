@@ -65,8 +65,11 @@ var checksumCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(checksumCmd)
+	//rootCmd.AddCommand(checksumCmd)
+	checksumCmd.Flags().StringVarP(&targetFilename, "file", "f", "", "the input file")
 	checksumCmd.Flags().BoolVar(&md5, "md5", false, "check sum with md5 algorithm")
 	checksumCmd.Flags().BoolVar(&sha1, "sha1", false, "check sum with sha1 algorithm")
 	checksumCmd.Flags().BoolVar(&sha256, "sha256", false, "check sum with sha256 algorithm")
+	checksumCmd.Flags().BoolP("help", "h", false, "Print usage")
+	checksumCmd.Flags().MarkHidden("help")
 }

@@ -19,15 +19,20 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var cfgFile string
+// files for subcommands, will be initialized in linecount, checksum
 var targetFilename string
+
+// update during compile time
 var VERSION string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "fops",
 	Short: "File Ops",
-	Long:  `File Operaters with linecount and checksum`,
+	Run: func(cmd *cobra.Command, args []string) {
+		cmd.Help()
+	},
+	//Long:  `File Operaters with linecount and checksum`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -38,5 +43,9 @@ func Execute(version string) {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&targetFilename, "file", "f", "", "")
+	cobra.EnableCommandSorting = false
+	rootCmd.SetHelpTemplate(helpTemplate)
+	rootCmd.SetUsageTemplate(usageTemplate)
+	rootCmd.AddCommand(linecountCmd)
+	rootCmd.AddCommand(checksumCmd)
 }

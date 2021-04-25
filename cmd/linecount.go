@@ -58,5 +58,8 @@ var linecountCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(linecountCmd)
+	//rootCmd.AddCommand(linecountCmd)
+	linecountCmd.Flags().StringVarP(&targetFilename, "file", "f", "", "the input file")
+	linecountCmd.Flags().BoolP("help", "h", false, "Print usage")
+	linecountCmd.Flags().MarkHidden("help")
 }
