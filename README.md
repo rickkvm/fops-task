@@ -5,7 +5,7 @@
 - [Overview](#Overview)
 - [How to](##Howto)
 - [Features](##Features)
-- [Known issues](##Known issues)
+- [Known issues](##Issues)
 
 ## Overview
 This is a offline learning and coding project for TrendMicro github interview process.
@@ -13,7 +13,7 @@ This is a offline learning and coding project for TrendMicro github interview pr
 ## HowTo
 Get `fops` source code and install related dependencies:
 
-        go get -u github.com/spf13/cobra
+        go get -u github.com/rickkvm/fops-task
 
 You can build code with following command, in which `main.VERSION=prebuild` is the application build version
 
@@ -28,10 +28,10 @@ This project will implemnt following features
   * [x] sha1
   * [x] sha256
 - [x] version
-- [ ] help information
-  * [ ] linecount
-  * [ ] checksum
+- [x] help information
+  * [x] linecount
+  * [x] checksum
 
-## Known issues
+## Issues
 * cannot determine text file newline separator (windows file will be incorrect)
 * counts big file will exhausted memory
