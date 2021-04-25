@@ -20,7 +20,7 @@ import "github.com/rickkvm/fops-task/cmd"
 var (
 	// version shoud be set during compile time
 	// will be updated by github action releaser
-	version string = "v0.1.0"
+	version string = "0.1.0" // default to 0.1.0 because, requirement
 )
 
 func main() {
