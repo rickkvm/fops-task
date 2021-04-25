@@ -49,7 +49,7 @@ Available Commands:
   linecount   Print line count of file
   checksum    Print checksum of file
   version     Show the version info
-  help        Help about any command
+  help        Help about commands
 
 Flags:
   -h, --help   help for fops

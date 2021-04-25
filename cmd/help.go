@@ -1,5 +1,47 @@
 package cmd
 
+import (
+	"fmt"
+	"github.com/spf13/cobra"
+	"strings"
+)
+
+type Command = cobra.Command
+
+var helpCmd = &cobra.Command{
+	Use:   "help [command]",
+	Short: "Help about commands",
+	ValidArgsFunction: func(c *Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		var completions []string
+		cmd, _, e := c.Root().Find(args)
+		if e != nil {
+			return nil, cobra.ShellCompDirectiveNoFileComp
+		}
+		if cmd == nil {
+			// Root help command.
+			cmd = c.Root()
+		}
+		for _, subCmd := range cmd.Commands() {
+			if subCmd.IsAvailableCommand() {
+				if strings.HasPrefix(subCmd.Name(), toComplete) {
+					completions = append(completions, fmt.Sprintf("%s\t%s", subCmd.Name(), subCmd.Short))
+				}
+			}
+		}
+		return completions, cobra.ShellCompDirectiveNoFileComp
+	},
+	Run: func(c *Command, args []string) {
+		cmd, _, e := c.Root().Find(args)
+		if cmd == nil || e != nil {
+			c.Printf("Unknown help topic %#q\n", args)
+			cobra.CheckErr(c.Root().Usage())
+		} else {
+			cmd.InitDefaultHelpFlag() // make possible 'help' flag to be shown
+			cobra.CheckErr(cmd.Help())
+		}
+	},
+}
+
 const helpTemplate = `{{with (or .Long .Short)}}{{. | trimTrailingWhitespaces}}{{end}}
 {{if or .Runnable .HasSubCommands}}
 {{.UsageString}}
