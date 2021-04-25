@@ -1,5 +1,5 @@
 /*
-Copyright © 2021 NAME HERE <EMAIL ADDRESS>
+Copyright © 2021 Rick Chen <rick.kvm@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -66,15 +66,6 @@ var checksumCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(checksumCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// checksumCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
 	checksumCmd.Flags().BoolVar(&md5, "md5", false, "check sum with md5 algorithm")
 	checksumCmd.Flags().BoolVar(&sha1, "sha1", false, "check sum with sha1 algorithm")
 	checksumCmd.Flags().BoolVar(&sha256, "sha256", false, "check sum with sha256 algorithm")

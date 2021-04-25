@@ -17,6 +17,11 @@ package main
 
 import "github.com/rickkvm/fops-task/cmd"
 
+var (
+	// version shoud be set during compile time
+	VERSION string = "v0.1.0"
+)
+
 func main() {
-	cmd.Execute()
+	cmd.Execute(VERSION)
 }

@@ -1,5 +1,5 @@
 /*
-Copyright © 2021 NAME HERE <EMAIL ADDRESS>
+Copyright © 2021 Rick Chen <rick.kvm@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -28,12 +28,28 @@ import (
 var linecountCmd = &cobra.Command{
 	Use:   "linecount",
 	Short: "Print line count of file",
-	Long:  `Print line count of file`,
 	Run: func(cmd *cobra.Command, args []string) {
+		if targetFilename == "" {
+			cmd.Help()
+			os.Exit(1)
+		}
+		stat, e := os.Lstat(targetFilename)
+		if e != nil {
+			if os.IsNotExist(e) {
+				fmt.Printf("error: No such file '%s'\n", targetFilename)
+				os.Exit(1)
+			}
+			fmt.Println("unknwon error", e.Error())
+			os.Exit(1)
+		}
 
+		if stat.IsDir() {
+			fmt.Printf("error: Expected file got directory '%s'\n", targetFilename)
+			os.Exit(1)
+		}
 		data, e := ioutil.ReadFile(targetFilename)
 		if e != nil {
-			fmt.Println("error: Cannot open file '%s'\n", targetFilename)
+			fmt.Printf("error: Cannot open file '%s'\n", targetFilename)
 			os.Exit(1)
 		}
 		result := linecount.Count(data)
@@ -43,14 +59,4 @@ var linecountCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(linecountCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// linecountCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// linecountCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

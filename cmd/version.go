@@ -16,27 +16,20 @@ limitations under the License.
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
 )
 
-var cfgFile string
-var targetFilename string
-var VERSION string
-
-// rootCmd represents the base command when called without any subcommands
-var rootCmd = &cobra.Command{
-	Use:   "fops",
-	Short: "File Ops",
-	Long:  `File Operaters with linecount and checksum`,
-}
-
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
-func Execute(version string) {
-	VERSION = version
-	cobra.CheckErr(rootCmd.Execute())
+// versionCmd represents the version command
+var versionCmd = &cobra.Command{
+	Use:   "version",
+	Short: "Show the version info",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println(cmd.Root().Use + " " + VERSION)
+	},
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&targetFilename, "file", "f", "", "")
+	rootCmd.AddCommand(versionCmd)
 }
