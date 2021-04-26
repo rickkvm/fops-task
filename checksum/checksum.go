@@ -13,9 +13,10 @@ type HashAlgorithm int
 type HashSum hash.Hash
 
 const (
-	MD5    = 1
-	SHA1   = 2
-	SHA256 = 3
+	_ = iota
+	MD5
+	SHA1
+	SHA256
 )
 
 func getHashReader(alg HashAlgorithm) HashSum {
