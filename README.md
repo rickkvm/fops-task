@@ -3,10 +3,10 @@
 # Table of Contents
 
 - [Overview](#Overview)
-- [How to](##Howto)
-- [Denendencies](##Dependencies)
-- [Features](##Features)
-- [Known issues](##Issues)
+- [How to](#Howto)
+- [Denendencies](#Dependencies)
+- [Features](#Features)
+- [Known issues](#Issues)
 
 ## Overview
 This is a offline learning and coding project for TrendMicro github interview process. This project will implement [feature](##Features) list below.
@@ -66,8 +66,10 @@ This project will implemnt following features
 - [x] help information
   * [x] linecount
   * [x] checksum
+
 ## Dependencies
 * [cobra](cobra) - This project uses cobra as command line framework.
+
 ## Issues
 * cannot determine text file newline separator (windows file will be incorrect)
 * counts big file will exhausted memory
