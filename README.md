@@ -72,6 +72,6 @@ This project will implemnt following features
 
 ## Issues
 * cannot determine text file newline separator (windows file will be incorrect)
-* counts big file will exhausted memory
+* ~~counts big file will exhausted memory~~
 
 [cobra]:(https://github.com/spf13/cobra)
