@@ -17,39 +17,33 @@ package cmd
 
 import (
 	"fmt"
-	"io/ioutil"
-	"os"
-
 	"github.com/rickkvm/fops-task/linecount"
 	"github.com/spf13/cobra"
+	"os"
 )
 
 // linecountCmd represents the linecount command
 var linecountCmd = &cobra.Command{
 	Use:   "linecount",
 	Short: "Print line count of file",
-	Run: func(cmd *cobra.Command, args []string) {
-		stat, e := os.Lstat(targetFilename)
+	RunE: func(cmd *cobra.Command, args []string) error {
+		e := checkFileExist(targetFilename)
 		if e != nil {
-			if os.IsNotExist(e) {
-				fmt.Printf("error: No such file '%s'\n", targetFilename)
-				os.Exit(1)
-			}
-			fmt.Println("unknwon error", e.Error())
-			os.Exit(1)
+			return e
 		}
-
-		if stat.IsDir() {
-			fmt.Printf("error: Expected file got directory '%s'\n", targetFilename)
-			os.Exit(1)
-		}
-		data, e := ioutil.ReadFile(targetFilename)
+		file, e := os.Open(targetFilename)
 		if e != nil {
-			fmt.Printf("error: Cannot open file '%s'\n", targetFilename)
-			os.Exit(1)
+			return e
 		}
-		result := linecount.Count(data)
+		result, e := linecount.Count(file)
+		if e == linecount.ErrCountingBinary {
+			return fmt.Errorf("error: Cannot do linecount for binary file '%s'", targetFilename)
+		}
+		if e != nil {
+			return e
+		}
 		fmt.Println(result)
+		return nil
 	},
 }
 

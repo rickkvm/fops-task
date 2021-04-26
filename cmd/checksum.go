@@ -45,14 +45,24 @@ var checksumCmd = &cobra.Command{
 			algorithm = checksum.SHA256
 		}
 	},
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		e := checkFileExist(targetFilename)
+		if e != nil {
+			return e
+		}
 		file, e := os.Open(targetFilename)
 		if e != nil {
 			fmt.Printf("Open file Error [%s]\n", e.Error())
-			os.Exit(1)
+			return e
 		}
-		result := checksum.ChecksumHash(file, checksum.HashAlgorithm(algorithm))
+		defer file.Close()
+		result, e := checksum.ChecksumHash(file, checksum.HashAlgorithm(algorithm))
+		if e != nil {
+			fmt.Printf("unknown error [%s]\n", e.Error())
+			return e
+		}
 		fmt.Println(result)
+		return nil
 	},
 }
 
