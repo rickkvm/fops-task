@@ -29,10 +29,6 @@ var linecountCmd = &cobra.Command{
 	Use:   "linecount",
 	Short: "Print line count of file",
 	Run: func(cmd *cobra.Command, args []string) {
-		if targetFilename == "" {
-			cmd.Help()
-			os.Exit(1)
-		}
 		stat, e := os.Lstat(targetFilename)
 		if e != nil {
 			if os.IsNotExist(e) {
@@ -62,4 +58,5 @@ func init() {
 	linecountCmd.Flags().StringVarP(&targetFilename, "file", "f", "", "the input file")
 	linecountCmd.Flags().BoolP("help", "h", false, "Print usage")
 	linecountCmd.Flags().MarkHidden("help")
+	linecountCmd.MarkFlagRequired("file")
 }

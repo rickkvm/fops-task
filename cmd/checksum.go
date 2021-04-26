@@ -16,11 +16,9 @@ limitations under the License.
 package cmd
 
 import (
-	"bytes"
 	"fmt"
 	"github.com/rickkvm/fops-task/checksum"
 	"github.com/spf13/cobra"
-	"io"
 	"os"
 )
 
@@ -48,13 +46,7 @@ var checksumCmd = &cobra.Command{
 		}
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		var e error
-		var file io.Reader
-		if targetFilename == "" {
-			file = bytes.NewReader([]byte(""))
-		} else {
-			file, e = os.Open(targetFilename)
-		}
+		file, e := os.Open(targetFilename)
 		if e != nil {
 			fmt.Printf("Open file Error [%s]\n", e.Error())
 			os.Exit(1)
@@ -72,4 +64,6 @@ func init() {
 	checksumCmd.Flags().BoolVar(&sha256, "sha256", false, "check sum with sha256 algorithm")
 	checksumCmd.Flags().BoolP("help", "h", false, "Print usage")
 	checksumCmd.Flags().MarkHidden("help")
+
+	checksumCmd.MarkFlagRequired("file")
 }
