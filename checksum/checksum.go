@@ -6,7 +6,6 @@ import "crypto/md5"
 import "crypto/sha1"
 import "crypto/sha256"
 import "encoding/hex"
-import "fmt"
 import "io"
 
 type HashAlgorithm int
@@ -32,7 +31,7 @@ func getHashReader(alg HashAlgorithm) HashSum {
 	}
 }
 
-func ChecksumHash(file io.Reader, alg HashAlgorithm) string {
+func ChecksumHash(file io.Reader, alg HashAlgorithm) (string, error) {
 	hash := getHashReader(alg)
 
 	buff := make([]byte, 2048)
@@ -43,10 +42,9 @@ func ChecksumHash(file io.Reader, alg HashAlgorithm) string {
 			break
 		}
 		if e != nil {
-			fmt.Printf("unknown error - [%s]\n", e.Error())
-			return ""
+			return "", e
 		}
-		hash.Write(buff[0:n])
+		hash.Write(buff[:n])
 	}
-	return hex.EncodeToString(hash.Sum(nil))
+	return hex.EncodeToString(hash.Sum(nil)), nil
 }

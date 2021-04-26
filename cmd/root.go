@@ -16,7 +16,9 @@ limitations under the License.
 package cmd
 
 import (
+	"fmt"
 	"github.com/spf13/cobra"
+	"os"
 )
 
 // files for subcommands, will be initialized in linecount, checksum
@@ -32,6 +34,8 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		cmd.Help()
 	},
+	SilenceErrors: true,
+	SilenceUsage:  true,
 	//Long:  `File Operaters with linecount and checksum`,
 }
 
@@ -39,7 +43,11 @@ var rootCmd = &cobra.Command{
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute(version string) {
 	VERSION = version
-	cobra.CheckErr(rootCmd.Execute())
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Fprintf(os.Stderr, "error: %s\n", err.Error())
+		fmt.Println()
+		os.Exit(1)
+	}
 }
 
 func init() {
@@ -49,4 +57,19 @@ func init() {
 	rootCmd.AddCommand(linecountCmd)
 	rootCmd.AddCommand(checksumCmd)
 	rootCmd.SetHelpCommand(helpCmd)
+}
+
+func checkFileExist(path string) error {
+	stat, e := os.Lstat(targetFilename)
+	if e != nil {
+		if os.IsNotExist(e) {
+			return fmt.Errorf("No such file '%s'", targetFilename)
+		}
+		return e
+	}
+
+	if stat.IsDir() {
+		return fmt.Errorf("Expected file got directory '%s'", targetFilename)
+	}
+	return nil
 }
